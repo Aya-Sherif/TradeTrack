@@ -9,7 +9,7 @@ class CompanyTransaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['company_id', 'season_id', 'weight', 'price_per_kg', 'total_cost'];
+    protected $fillable = ['transaction_date','company_id', 'season_id', 'weight', 'price_per_kg', 'total_cost'];
 
     // A company transaction belongs to a company
     public function company()
