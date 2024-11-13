@@ -30,6 +30,8 @@ return new class extends Migration
             $table->decimal('weight', 8, 2); // Weight of the product in kg
             $table->decimal('price_per_kg', 10, 2); // Price per kilogram
             $table->decimal('total_cost', 10, 2); // Total cost (weight * price_per_kg)
+            $table->date('transaction_date'); // Date of transaction
+
             $table->timestamps();
         });
 
