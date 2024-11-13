@@ -1,0 +1,79 @@
+@extends('layouts.lay')
+
+@section('content')
+    <div class="main_content_container">
+        <div class="main_container main_menu_open">
+            <div class="page_content">
+                <h1 class="heading_title">{{ $merchant->name }}</h1>
+
+                <div class="form">
+                    <form
+                        action="{{ route('payments.update', ['merchant_id' => $merchant->id, 'payment' => $payment->id]) }}"
+                        method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Row for input fields -->
+                        <div class="row" style="align-items: flex-end;">
+                            <!-- Amount Field -->
+                            <div class="form-group col-md-4">
+                                <label for="amount" class="control-label">المبلغ</label>
+                                <input type="number" name="amount" class="form-control"
+                                    value="{{ old('amount', $payment->amount) }}" required>
+                                @error('amount')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Payment Type Field -->
+                            <div class="form-group col-md-4">
+                                <label for="payment_type" class="control-label">نوع الدفع</label>
+                                <select name="payment_type" class="form-control" required>
+                                    <option value="نقدي"
+                                        {{ old('payment_type', $payment->payment_type) == 'نقدي' ? 'selected' : '' }}>نقداً
+                                    </option>
+                                    <option value="تحويل بنك"
+                                        {{ old('payment_type', $payment->payment_type) == 'تحويل بنك' ? 'selected' : '' }}>
+                                        تحويل بنكي</option>
+                                </select>
+
+
+                                @error('payment_type')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Date Field -->
+                            <div class="form-group col-md-4">
+                                <label for="date" class="control-label">التاريخ</label>
+                                <input type="date" name="date" class="form-control"
+                                    value="{{ old('date', $payment->payment_date) }}" required>
+                                @error('date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Row for the Description Field -->
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="description" class="control-label">الوصف</label>
+                                <textarea name="description" class="form-control" rows="3">{{ old('description', $payment->description) }}</textarea>
+                                @error('description')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">تعديل المبلغ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
