@@ -9,7 +9,7 @@ class MerchantPayment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['merchant_id', 'season_id', 'amount', 'payment_date', 'payment_type'];
+    protected $fillable = ['updated','total_in_this_step','merchant_id', 'season_id', 'amount', 'payment_date', 'payment_type'];
 
     // A MerchantPayment belongs to a merchant
     public function merchant()

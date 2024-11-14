@@ -22,6 +22,8 @@ class CreateActivityLogsTable extends Migration
             $table->decimal('price_per_kg', 10, 2)->nullable(); // Price per kg for transactions
             $table->decimal('total_price', 10, 2)->nullable(); // Total price for transactions
             $table->string('payment_type')->nullable(); // For payment type
+            $table->tinyInteger('updated')->default(0); // Use 0 for false instead of 'false'
+            $table->integer('total_in_this_step')->default(0);
             $table->text('description')->nullable(); // Description (for payments or transactions)
             $table->timestamps();
         });

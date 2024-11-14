@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Name of the company
-            $table->decimal('account_balance', 10, 2)->default(0); // Account balance to track payments and credits
+            $table->integer('account_balance')->default(0); // Account balance to track payments and credits
             $table->timestamps();
         });
 
@@ -28,8 +28,10 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade'); // Reference to companies table
             $table->foreignId('season_id')->constrained('seasons')->onDelete('cascade'); // Link to seasons table
             $table->decimal('weight', 8, 2); // Weight of the product in kg
-            $table->decimal('price_per_kg', 10, 2); // Price per kilogram
-            $table->decimal('total_cost', 10, 2); // Total cost (weight * price_per_kg)
+            $table->integer('price_per_kg'); // Price per kilogram
+            $table->integer('total_cost'); // Total cost (weight * price_per_kg)
+            $table->tinyInteger('updated')->default(0); // Use 0 for false instead of 'false'
+
             $table->date('transaction_date'); // Date of transaction
 
             $table->timestamps();
@@ -39,12 +41,13 @@ return new class extends Migration
         Schema::create('company_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade'); // Reference to companies table
-            $table->foreignId('company_transaction_id')->constrained('company_transactions')->onDelete('cascade'); // Reference to company transactions table
-            $table->decimal('payment_amount', 10, 2); // Amount paid
+            $table->foreignId('season_id')->constrained('seasons')->onDelete('cascade'); // Link to seasons table
+            $table->integer('payment_amount'); // Amount paid
             $table->enum('payment_method', ['نقدي', 'تحويل بنك']); // Payment method (cash or bank_transfer)
-
+            $table->tinyInteger('updated')->default(0); // Use 0 for false instead of 'false'
             $table->date('payment_date'); // Date of payment
             $table->timestamps();
+
         });
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 

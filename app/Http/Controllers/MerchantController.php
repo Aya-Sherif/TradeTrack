@@ -51,11 +51,11 @@ class MerchantController extends Controller
         $this->activityLogService->truncateLogs();
 
         $merchantPayments = $merchant->merchantPayments()
-            ->select('id', 'payment_date as date', 'amount', 'payment_type', 'description')
+            ->select('id', 'payment_date as date', 'amount', 'payment_type', 'description','updated')
             ->get();
 
         $merchantTransactions = $merchant->merchantGoods()
-            ->select('id', 'date', 'weight', 'price_per_kg', 'total_price')
+            ->select('id', 'date', 'weight', 'price_per_kg', 'total_price','updated')
             ->get();
 
         foreach ($merchantPayments as $payment) {
@@ -68,7 +68,8 @@ class MerchantController extends Controller
 
         $filters = $request->only('payment_type', 'type', 'date');
         $activityLogs = $this->activityLogService->filterLogs($merchant->id, $filters);
-$num=count($merchantTransactions);
+
+        $num=count($merchantTransactions);
         return view('merchant.show', compact('num','merchant', 'activityLogs'));
     }
 

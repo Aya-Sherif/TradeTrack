@@ -9,7 +9,7 @@ class CompanyPayment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['company_id', 'company_transaction_id', 'payment_amount', 'payment_method', 'payment_date'];
+    protected $fillable = ['updated','total_in_this_step','company_id', 'company_transaction_id', 'payment_amount', 'payment_method', 'payment_date'];
 
     // A company payment belongs to a company
     public function company()
