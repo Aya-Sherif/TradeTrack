@@ -9,7 +9,7 @@ class MerchantGood extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['merchant_id', 'season_id', 'weight', 'price_per_kg', 'total_price', 'date'];
+    protected $fillable = ['updated','total_in_this_step','merchant_id', 'season_id', 'weight', 'price_per_kg', 'total_price', 'date'];
 
     // A MerchantGood belongs to a merchant
     public function merchant()

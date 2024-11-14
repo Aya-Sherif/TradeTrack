@@ -42,7 +42,7 @@
                                 <td>{{ $company->account_balance }}</td>
                                 <td>
                                     <a href="{{ route('transactions.create', $company->id) }}" class="btn btn-danger">إضافة نقله</a>
-                                    <a href="{{ route('payments.create', $company->id) }}" class="btn btn-success">تسديد</a>
+                                    <a href="{{ route('pays.create', $company->id) }}" class="btn btn-success">تسديد</a>
                                     <a href="{{ route('companies.show', $company->id) }}" class="btn btn-info">كشف حساب</a>
                                 </td>
                             </tr>

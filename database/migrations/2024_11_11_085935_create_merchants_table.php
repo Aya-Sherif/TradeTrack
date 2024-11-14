@@ -27,9 +27,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade'); // Reference to merchants
             $table->foreignId('season_id')->constrained('seasons')->onDelete('cascade'); // Link to seasons table
-            $table->decimal('weight', 8, 2); // Weight of goods
-            $table->decimal('price_per_kg', 8, 2); // Price per kg of goods
-            $table->decimal('total_price', 10, 2); // Total price of the goods
+            $table->integer('weight'); // Weight of goods
+            $table->integer('price_per_kg'); // Price per kg of goods
+            $table->integer('total_price'); // Total price of the goods
+            $table->tinyInteger('updated')->default(0); // Use 0 for false instead of 'false'
+
             $table->date('date'); // Date when the goods were added
             $table->timestamps();
         });
@@ -40,8 +42,10 @@ return new class extends Migration
             $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade'); // Reference to merchants
             $table->foreignId('season_id')->constrained('seasons')->onDelete('cascade'); // Link to seasons table
             $table->decimal('amount', 10, 2); // Payment amount
+
             $table->date('payment_date'); // Date of payment
             $table->enum('payment_type', ['نقدي', 'تحويل بنك'])->comment('نوع الدفع (نقدي أو تحويل بنك)');
+            $table->tinyInteger('updated')->default(0); // Use 0 for false instead of 'false'
             $table->text('description')->nullable(); // Optional additional details about the payment
             $table->timestamps();
         });
@@ -56,7 +60,6 @@ return new class extends Migration
             $table->timestamps();
         });
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
     }
 
     /**

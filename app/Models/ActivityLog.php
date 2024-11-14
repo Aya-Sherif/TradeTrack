@@ -24,6 +24,8 @@ class ActivityLog extends Model
         'total_price',
         'payment_type',
         'description',
+        'updated',
+        'total_in_this_step'
     ];
 
     // Relationship with Merchant model

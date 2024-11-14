@@ -35,12 +35,12 @@ class MerchantPaymentController extends Controller
     public function store(StoreMerchantPaymentRequest $request, $merchant_id)
     {
         $merchant = Merchant::findOrFail($merchant_id);
-// dd($request);
-        // إضافة المدفوعات
-        $payment = $this->merchantPaymentService->store($merchant_id, $request);
-
+        // dd($request);
         // تحديث رصيد التاجر
         $this->merchantBalanceService->updateBalanceForNewPayment($merchant, $request->amount);
+        // إضافة المدفوعات
+        $payment = $this->merchantPaymentService->store($merchant, $request);
+
 
         return redirect()->route('merchants.index')
             ->with('success', 'تم خصم المبلغ بنجاح من الحساب');
@@ -65,11 +65,17 @@ class MerchantPaymentController extends Controller
         $oldAmount = $payment->amount;
 
         // تحديث المدفوعات
-        $this->merchantPaymentService->update($payment_id, $request->validated());
+        $this->merchantPaymentService->update($payment_id, $request->validated(),$oldAmount);
 
         // تحديث رصيد التاجر
         $newAmount = $request->amount;
         $this->merchantBalanceService->updateBalanceForUpdatedPayment($merchant, $oldAmount, $newAmount);
+        if ($oldAmount != $newAmount) {
+            $payment = MerchantPayment::findOrFail($payment_id);
+            $payment->update([
+                'updated' => 1,
+            ]);
+        }
 
         return redirect()->route('merchants.show', $merchant_id)
             ->with('success', 'تم تحديث الدفع بنجاح');

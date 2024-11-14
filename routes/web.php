@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyGoodsController;
+use App\Http\Controllers\CompanyPaymentController;
 use App\Http\Controllers\DailyExpenseController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\FarmerController;
@@ -40,6 +41,7 @@ Route::resource('reserved_stock', ReservedStockController::class);
 Route::resource('daily_expenses', DailyExpenseController::class);
 Route::resource('merchants/{merchant_id}/goods', MerchantGoodsController::class);
 Route::resource('companies/{companyId}/transactions', CompanyGoodsController::class);
+Route::resource('companies/{companyId}/pays', CompanyPaymentController::class);
 
 // Add this line below the resource route for merchants
 Route::get('search', [MerchantController::class, 'search'])->name('search');

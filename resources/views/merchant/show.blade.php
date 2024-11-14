@@ -65,13 +65,14 @@
                         <tr>
                             <th style="text-align: right;">#</th>
                             <th style="text-align: right;width: 150px;">التاريخ</th>
-                            <th style="text-align: right;">الوزن</th>
-                            <th style="text-align: right;">السعر لكل كيلو</th>
-                            <th style="text-align: right;">السعر الكلي</th>
-                            <th style="text-align: right;">المبلغ المدفوع</th>
-                            <th style="text-align: right;">طريقة الدفع</th>
-                            <th style="text-align: right;">تفاصيل</th>
-                            <th style="text-align: right;">التحكم</th>
+                            <th style="text-align: right;width: 100px;">الوزن</th>
+                            <th style="text-align: right;width: 70px;">السعر </th>
+                            <th style="text-align: right;width: 120px;">المبلغ</th>
+                            <th style="text-align: right;width: 120px;">تنزيل</th>
+                            <th style="text-align: right;width: 100px;">طريقة الدفع</th>
+                            <th style="text-align: right;width: 120px;">المبلغ الكلي</th>
+                            <th style="text-align: right;width: 150px;">ملاحظات</th>
+                            <th style="text-align: right;width: 70px;">التحكم</th>
 
                         </tr>
                     </thead>
@@ -88,6 +89,7 @@
                                     <td>{{ intval($item['total_price']) }} </td>
                                     <td>-</td>
                                     <td>-</td>
+                                    <td>{{ $item['total_in_this_step'] }}</td>
                                     <td>{{ $item['description'] }}</td>
 
                                 {{-- Check if it's a payment --}}
@@ -97,6 +99,7 @@
                                     <td>-</td>
                                     <td>{{ intval($item['amount']) }} </td>
                                     <td>{{ $item['payment_type'] }}</td>
+                                    <td>{{ $item['total_in_this_step'] }}</td>
                                     <td>{{ $item['description'] }}</td>
                                 @endif
                                 <td>
