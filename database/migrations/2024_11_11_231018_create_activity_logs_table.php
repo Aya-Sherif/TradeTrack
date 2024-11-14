@@ -14,7 +14,7 @@ class CreateActivityLogsTable extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
             $table->integer('item_id');
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade'); // Merchant reference
+            $table->integer('temp_id'); // Merchant reference
             $table->string('type'); // 'payment' or 'transaction'
             $table->date('date'); // The date of the activity
             $table->decimal('amount', 10, 2)->nullable(); // Amount for payments

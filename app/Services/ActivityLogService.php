@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\ActivityLog;
 
 use function PHPSTORM_META\type;
+use Illuminate\Support\Facades\DB;
 
 class ActivityLogService
 {
@@ -21,12 +22,12 @@ class ActivityLogService
 
         ActivityLog::create([
             'item_id' => $payment->id,
-            'merchant_id' => $merchantId,
+            'temp_id' => $merchantId,
             'type' => 'payment',
             'date' => $payment->date,
             'amount' => $payment->amount,
             'payment_type' => $payment->payment_type,
-            'updated'=>$payment->updated,
+            'updated' => $payment->updated,
             'description' => $payment->description,
         ]);
     }
@@ -36,12 +37,12 @@ class ActivityLogService
     {
         ActivityLog::create([
             'item_id' => $transaction->id,
-            'merchant_id' => $merchantId,
+            'temp_id' => $merchantId,
             'type' => 'transaction',
             'date' => $transaction->date,
             'weight' => $transaction->weight,
             'price_per_kg' => $transaction->price_per_kg,
-            'updated'=>$transaction->updated,
+            'updated' => $transaction->updated,
             'total_price' => $transaction->total_price,
         ]);
     }
@@ -50,8 +51,8 @@ class ActivityLogService
     public function filterLogs($merchantId, $filters)
     {
         $this->SetTotal();
-        $query = ActivityLog::where('merchant_id', $merchantId);
-// dd($query->orderBy('date')->get());
+        $query = ActivityLog::where('temp_id', $merchantId);
+        // dd($query->orderBy('date')->get());
         if (isset($filters['payment_type'])) {
             $query->where('payment_type', $filters['payment_type']);
         }
@@ -67,25 +68,22 @@ class ActivityLogService
     public function SetTotal()
     {
         $activatedlogs = ActivityLog::orderBy('date')->get();
-$oldValue=0;
+        $oldValue = 0;
         foreach ($activatedlogs as $item) {
 
-            if($item->type=='payment')
-            {
+            if ($item->type == 'payment') {
 
                 $item->update([
                     'total_in_this_step' => $oldValue + $item->amount
                 ]);
-            }
-            else{
+            } else {
                 $item->update([
                     'total_in_this_step' => $oldValue + $item->total_price
                 ]);
             }
 
-            $oldValue=$item->total_in_this_step;
+            $oldValue = $item->total_in_this_step;
             // dd( $item);
         }
     }
-
 }
