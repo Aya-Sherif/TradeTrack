@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCompanyGoodRequest;
+use App\Http\Requests\UpdateCompanyTransactionRequest;
 use App\Models\Company;
 use App\Models\CompanyTransaction;
 use App\Models\Season;
@@ -55,7 +56,7 @@ class CompanyGoodsController extends Controller
 
         // Optionally, update the company's balance or other fields here if needed
         // Example:
-         $company->account_balance += $companyGood->total_cost;
+        $company->account_balance += $companyGood->total_cost;
         $company->save();
 
         // Redirect to the company transactions page with a success message
@@ -73,18 +74,46 @@ class CompanyGoodsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($companyId, $transactionId)
     {
-        //
+        // Retrieve the company and the specific transaction
+        $company = Company::findOrFail($companyId);
+        $transaction = CompanyTransaction::where('company_id', $company->id)->findOrFail($transactionId);
+
+        // Pass company and transaction data to the view
+        return view('company.goods.edit', compact('company', 'transaction'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCompanyTransactionRequest $request, $companyId, $transactionId)
     {
-        //
+        // Find the company and transaction
+        $company = Company::findOrFail($companyId);
+        $transaction = CompanyTransaction::where('company_id', $company->id)->findOrFail($transactionId);
+        $oldamount = $company->account_balance - $transaction->total_cost;
+
+        // Update transaction fields
+        $transaction->weight = $request->input('weight');
+        $transaction->price_per_kg = $request->input('price_per_kg');
+        $transaction->total_cost = $request->input('weight') * $request->input('price_per_kg');
+        $transaction->transaction_date = $request->input('date');
+        $transaction->save();
+
+        $company->account_balance = $oldamount + $transaction->total_cost;
+        $company->save();
+
+        if ($oldamount != $company->account_balance) {
+            $transaction->updated = 0;
+            $transaction->save();
+        }
+        // Redirect to the company's transaction page with a success message
+        return redirect()->route('companies.show', parameters: $company->id)
+            ->with('success', 'تم تعديل المعاملة بنجاح');
     }
+
 
     /**
      * Remove the specified resource from storage.

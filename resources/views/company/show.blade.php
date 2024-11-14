@@ -48,10 +48,7 @@
                         صافي الحساب :
                         <span style="color: #28a745;">{{ number_format($company->account_balance, 2) }} جنيه</span>
                     </h3>
-                    <h3 style="font-size: 2rem; font-weight: bold; color: #007bff; margin-left: 30px;">
-                        الموازين:
-                        <span style="color: #28a745;">{{ $num * 25 }} جنيه</span>
-                    </h3>
+
                 </div>
             </div>
 
@@ -68,7 +65,6 @@
                             <th style="text-align: right;width: 120px;">تنزيل</th>
                             <th style="text-align: right;width: 100px;">طريقة الدفع</th>
                             <th style="text-align: right;width: 120px;">المبلغ الكلي</th>
-                            <th style="text-align: right;width: 150px;">ملاحظات</th>
                             <th style="text-align: right;width: 70px;">التحكم</th>
                         </tr>
                     </thead>
@@ -95,7 +91,6 @@
                                 <td>{{ intval($item['amount']) }} </td>
                                 <td>{{ $item['payment_type'] }}</td>
                                 <td>{{ $item['total_in_this_step'] }}</td>
-                                <td>{{ $item['description'] }}</td>
                             @endif
                             <td>
                                 @if ($item['type'] == 'transaction')
