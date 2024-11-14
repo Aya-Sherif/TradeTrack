@@ -15,7 +15,7 @@ class ActivityLog extends Model
     // Mass assignable attributes
     protected $fillable = [
         'item_id',
-        'merchant_id',
+        'temp_id',
         'type',
         'date',
         'amount',
@@ -29,8 +29,8 @@ class ActivityLog extends Model
     ];
 
     // Relationship with Merchant model
-    public function merchant()
-    {
-        return $this->belongsTo(Merchant::class);
-    }
+    // public function merchant()
+    // {
+    //     return $this->belongsTo(Merchant::class);
+    // }
 }

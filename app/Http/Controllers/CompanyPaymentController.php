@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyPaymentUpdateRequest;
 use App\Http\Requests\StoreCompanyPaymentRequest;
 use App\Models\Company;
 use App\Models\CompanyPayment;
@@ -71,18 +72,47 @@ class CompanyPaymentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($company_id, $payment_id)
     {
-        //
+        $payment = CompanyPayment::findOrFail($payment_id);
+        $company = Company::findOrFail($company_id);
+
+        return view('company.payments.edit', compact('payment', 'company'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // تحديث المدفوعات
+    public function update(CompanyPaymentUpdateRequest $request, $companyId, $paymentId)
     {
-        //
+        // Find the company and payment
+        $company = Company::findOrFail($companyId);
+        $payment = CompanyPayment::where('company_id', $companyId)->findOrFail($paymentId);
+
+        // Calculate balance adjustment
+        $originalAmount = $payment->payment_amount;
+        $newAmount = $request->input('amount');
+        $balanceAdjustment = $newAmount - $originalAmount;
+
+        // Update payment details
+        $payment->update([
+            'payment_amount' => $newAmount,
+            'payment_method' => $request->input('payment_type'),
+            'payment_date' => $request->input('payment_date'),
+        ]);
+        if($balanceAdjustment!=0)
+        {
+            $payment->update([
+            'updated'=>0
+            ]);
+        }
+
+        // Update company balance
+        $company->account_balance -= $balanceAdjustment;
+        $company->save();
+
+        // Redirect with success message
+        return redirect()->route('companies.show', $companyId)->with('success', 'تم تحديث الدفعة بنجاح');
     }
+
 
     /**
      * Remove the specified resource from storage.
