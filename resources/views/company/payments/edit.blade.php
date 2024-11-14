@@ -44,7 +44,16 @@
                             </div>
                         </div>
 
-                    
+                        <!-- Row for the Description Field -->
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="description" class="control-label">الوصف</label>
+                                <textarea name="description" class="form-control" rows="3">{{ old('description', $payment->description) }}</textarea>
+                                @error('description')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                         <!-- Submit Button -->
                         <div class="row">

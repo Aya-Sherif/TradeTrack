@@ -43,8 +43,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group row" style="display: flex; justify-content: flex-start; align-items: flex-start;">
-
+                    <div class="form-group row">
+                        <!-- Description -->
+                        <div class="col-md-6">
+                            <label for="description" class="control-label bring_right left_text">تعليق</label>
+                            <textarea name="description" class="form-control" rows="2">{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <!-- Season -->
                         <div class="col-md-6">
@@ -52,8 +59,8 @@
                             <select name="season_id" class="form-control" required>
                                 <option value="">اختر الموسم</option>
                                 @foreach($seasons as $season)
-                                <option value="{{ $season->id }}" {{ old('season_id', $seasons->first()->id) == $season->id ? 'selected' : '' }}>
-                                    {{ $season->name }}
+                                    <option value="{{ $season->id }}" {{ old('season_id') == $season->id ? 'selected' : '' }}>
+                                        {{ $season->name }}
                                     </option>
                                 @endforeach
                             </select>
