@@ -8,7 +8,9 @@ class Driver extends people
 {
     use HasFactory;
 
-    protected $fillable = ['season_id', 'from', 'to', 'fare', 'trip_date'];
+    protected $fillable = [
+        'person_id', 'season_id', 'start_from', 'to', 'fare', 'trip_date',
+    ];
 
     // A driver belongs to a season
     public function season()

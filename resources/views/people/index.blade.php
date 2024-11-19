@@ -59,7 +59,11 @@
                             <td>{{ number_format($person->account_balance, 2) }} جنيه</td>
                             <td>
                                 <!-- Actions (Conditional for Role) -->
-                                <a href="{{ route('workers.show', ['pearson_id'=>$person->id,'worker'=> $person->id]) }}" class="btn btn-info">كشف حساب</a>
+                                @if(request()->query('role') == 'worker')
+                                <a href="{{ route('workers.show', ['pearson_id'=>$person->id,'worker'=> $person->role]) }}" class="btn btn-info">كشف حساب</a>
+                                @elseif(request()->query('role') == 'driver')
+                                <a href="{{ route('drivers.show', ['person_id'=>$person->id,'driver'=> $person->role]) }}" class="btn btn-info">كشف حساب</a>
+                                @endif
                                 @if(request()->query('role') == 'worker')
                                     <a href="{{ route('workers.create', $person->id) }}" class="btn btn-success">إضافة يوم</a>
                                 @elseif(request()->query('role') == 'driver')

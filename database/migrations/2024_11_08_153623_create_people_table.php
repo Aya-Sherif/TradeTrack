@@ -40,7 +40,8 @@ return new class extends Migration
             $table->foreignId('person_id')->constrained('people')->onDelete('cascade'); // Reference to `people` table
             $table->unsignedBigInteger('season_id'); // Explicitly set to unsignedBigInteger
             $table->foreign('season_id')->references('id')->on('seasons')->onDelete('cascade'); // Link to season            $table->string('from'); // Starting location of the trip
-            $table->string('to'); // Destination of the trip
+            $table->string(column: 'start_from'); // Destination of the trip
+            $table->string(column: 'to'); // Destination of the trip
             $table->decimal('fare', 8, 2); // Trip fare
             $table->date('trip_date'); // Date of trip
             $table->timestamps();
