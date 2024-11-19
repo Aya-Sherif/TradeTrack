@@ -5,7 +5,7 @@
         <div class="main_container main_menu_open">
             <div class="page_content">
                 <h1 class="heading_title">
-                    @if(request()->query('role') == 'worker')
+                    @if (request()->query('role') == 'worker')
                         عرض كل العمال
                     @elseif(request()->query('role') == 'driver')
                         عرض كل السائقين
@@ -19,13 +19,14 @@
                     <form action="{{ route('people.index') }}" method="GET" class="form-inline navbar-form navbar-left">
                         <input type="text" name="query" class="form-control mr-2" placeholder="بحث باسم الشخص"
                             value="{{ request()->query('query') }}">
-                            <input type="hidden" name="role" value="{{ request()->query('role') }}"> <!-- Preserve role filter -->
+                        <input type="hidden" name="role" value="{{ request()->query('role') }}">
+                        <!-- Preserve role filter -->
 
                         <button type="submit" class="btn btn-secondary">بحث</button>
                     </form>
 
                     <a href="{{ route('people.create', ['role' => request()->query('role')]) }}" class="btn btn-primary">
-                        @if(request()->query('role') == 'worker')
+                        @if (request()->query('role') == 'worker')
                             إضافة عامل
                         @elseif(request()->query('role') == 'driver')
                             إضافة سائق
@@ -52,26 +53,35 @@
                             <td>التحكم</td>
                         </tr>
 
-                        @foreach ($people as $person) <!-- Updated variable name from 'workers' to 'people' -->
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $person->name }}</td>
-                            <td>{{ number_format($person->account_balance, 2) }} جنيه</td>
-                            <td>
-                                <!-- Actions (Conditional for Role) -->
-                                @if(request()->query('role') == 'worker')
-                                <a href="{{ route('workers.show', ['pearson_id'=>$person->id,'worker'=> $person->role]) }}" class="btn btn-info">كشف حساب</a>
-                                @elseif(request()->query('role') == 'driver')
-                                <a href="{{ route('drivers.show', ['person_id'=>$person->id,'driver'=> $person->role]) }}" class="btn btn-info">كشف حساب</a>
-                                @endif
-                                @if(request()->query('role') == 'worker')
-                                    <a href="{{ route('workers.create', $person->id) }}" class="btn btn-success">إضافة يوم</a>
-                                @elseif(request()->query('role') == 'driver')
-                                    <a href="{{ route('drivers.create', $person->id) }}" class="btn btn-success">إضافة يوم</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                        @foreach ($people as $person)
+                            <!-- Updated variable name from 'workers' to 'people' -->
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $person->name }}</td>
+                                <td>{{ number_format($person->account_balance, 2) }} جنيه</td>
+                                <td>
+                                    <!-- Actions (Conditional for Role) -->
+                                    @if (request()->query('role') == 'worker')
+                                        <a href="{{ route('workers.show', ['pearson_id' => $person->id, 'worker' => $person->role]) }}"
+                                            class="btn btn-info">كشف حساب</a>
+                                        <a href="{{ route('workers.create', $person->id) }}" class="btn btn-success">إضافة
+                                            يوم</a>
+                                        <!-- Redirect to payment page -->
+                                        <a href="{{ route('pay.create', ['person_id' => $person->id]) }}"
+                                            class="btn btn-primary">دفع</a>
+                                    @elseif(request()->query('role') == 'driver')
+                                        <a href="{{ route('drivers.show', ['person_id' => $person->id, 'driver' => $person->role]) }}"
+                                            class="btn btn-info">كشف حساب</a>
+                                        <a href="{{ route('drivers.create', $person->id) }}" class="btn btn-success">إضافة
+                                            رحلة</a>
+                                        <!-- Redirect to payment page -->
+                                        <a href="{{ route('pay.create', ['person_id' => $person->id]) }}"
+                                            class="btn btn-primary">دفع</a>
+                                    @endif
+
+                                </td>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>

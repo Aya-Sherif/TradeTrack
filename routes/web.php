@@ -9,14 +9,16 @@ use App\Http\Controllers\FarmerController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\MerchantGoodsController;
 use App\Http\Controllers\MerchantPaymentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\people;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ReservedStockController;
-use App\Http\Controllers\search;
 
+use App\Http\Controllers\search;
 use App\Http\Controllers\SeasonController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -37,6 +39,8 @@ Route::resource('farmers', FarmerController::class);
 Route::resource('people', PeopleController::class);
 Route::resource('workers/{pearson_id}/workers', WorkerController::class);
 Route::resource('drivers/{person_id}/drivers', DriverController::class);
+Route::get('payment/{person_id}/create', [PaymentController::class, 'create'])->name('pay.create');
+Route::post('payment/{person_id}', [PaymentController::class, 'store'])->name('pay.store');
 Route::resource('merchants', MerchantController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('seasons', SeasonController::class);
@@ -52,4 +56,3 @@ Route::get('search', [MerchantController::class, 'search'])->name('search');
 
 // Resource Route for Merchant Payments
 Route::resource('merchants/{merchant_id}/payments', MerchantPaymentController::class);
-
