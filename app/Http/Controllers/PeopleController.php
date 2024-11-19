@@ -13,45 +13,65 @@ class PeopleController extends Controller
      */
     public function index(Request $request)
     {
-        $role = $request->query('role');  // Get the role from query parameter
+        // Get query parameters
+        $role = $request->query('role');  // Role filter: 'worker', 'driver', or null
+        $query = $request->query('query');  // Search filter
 
-
-        if ($role) {
-            // Filter based on role (worker or driver)
-            $people = People::where('role', $role)->get();
-        } else {
-            // If no role is provided, show all people
-            $people = People::all();
-        }
-
-        return view('people.index', compact('people'));
+        // Query the People model
+        $people = People::when($role, function ($q) use ($role) {
+                // Apply role filter if provided
+                $q->where('role', $role);
+            })
+            ->when($query, function ($q) use ($query) {
+                // Apply search filter if provided
+                $q->where('name', 'like', '%' . $query . '%');
+            })
+            ->get();
+// dd($request);
+        // Return the view with the filtered list
+        return view('people.index', compact('people', 'role'));
     }
+
 
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $role=$request->query('role');
+        // dd($role);
         // Return the view for creating a new person (worker)
-        return view('people.create');
+        return view('people.create',compact('role'));
     }
 
     /**
      * Store a newly created person (worker) in storage.
      */
     public function store(StorePersonRequest $request)
-    {
-        // Store the new person in the people table
-        $person = people::create([
-            'name' => $request->name,
-            'role' => 'worker', // This will set the role to 'worker' by default
-            'account_balance' => 0, // Default balance for a new worker
-        ]);
+{
+    // Validate the role field if included
+    $validated = $request->validated();
 
-        // Redirect back with success message
-        return redirect()->route('workers.index')->with('success', 'تم إضافة العامل بنجاح');
+    // dd($request);
+    // Default role is 'worker' if none is provided
+    $role = $request->input('role', 'worker');
+    // Ensure the role is either 'worker' or 'driver'
+    if (!in_array($role, ['worker', 'driver'])) {
+        return redirect()->back()->withErrors(['role' => 'Invalid role specified']);
     }
+
+    // Store the new person in the people table
+    $person = People::create([
+        'name' => $validated['name'],
+        'role' => $role, // Dynamically set the role
+        'account_balance' => 0, // Default balance for a new person
+    ]);
+
+    // Redirect to the appropriate index with success message
+    return redirect()->route('people.index', ['role' => $role])->with('success', 'تم إضافة ' . ($role == 'worker' ? 'العامل' : 'السائق') . ' بنجاح');
+}
+
     /**
      * Display the specified resource.
      */

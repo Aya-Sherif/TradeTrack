@@ -4,25 +4,36 @@
     <div class="main_content_container">
         <div class="main_container main_menu_open">
             <div class="page_content">
-                <h1 class="heading_title">عرض كل العمال</h1>
-
+                <h1 class="heading_title">
+                    @if(request()->query('role') == 'worker')
+                        عرض كل العمال
+                    @elseif(request()->query('role') == 'driver')
+                        عرض كل السائقين
+                    @else
+                        عرض كل الأشخاص
+                    @endif
+                </h1>
                 <!-- Search and Add Company in the Same Line -->
                 <div class="d-flex justify-content-between mb-3">
                     <!-- Search Form -->
                     <form action="{{ route('people.index') }}" method="GET" class="form-inline navbar-form navbar-left">
                         <input type="text" name="query" class="form-control mr-2" placeholder="بحث باسم الشخص"
                             value="{{ request()->query('query') }}">
+                            <input type="hidden" name="role" value="{{ request()->query('role') }}"> <!-- Preserve role filter -->
+
                         <button type="submit" class="btn btn-secondary">بحث</button>
                     </form>
 
-                    <!-- Add Worker/Driver Button -->
-                    @if(request()->query('role') == 'worker')
-                        <a href="{{ route('people.create') }}" class="btn btn-primary">إضافة عامل</a>
-                    @elseif(request()->query('role') == 'driver')
-                        <a href="{{ route('people.create') }}" class="btn btn-primary">إضافة سائق</a>
-                    @else
-                        <a href="{{ route('people.create') }}" class="btn btn-primary">إضافة شخص</a>
-                    @endif
+                    <a href="{{ route('people.create', ['role' => request()->query('role')]) }}" class="btn btn-primary">
+                        @if(request()->query('role') == 'worker')
+                            إضافة عامل
+                        @elseif(request()->query('role') == 'driver')
+                            إضافة سائق
+                        @else
+                            إضافة شخص
+                        @endif
+                    </a>
+
                 </div>
 
 

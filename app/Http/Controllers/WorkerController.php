@@ -24,7 +24,15 @@ class WorkerController extends Controller
             })
             ->get();
 
-        return view('worker.index', compact('workers'));
+dd($workers);
+        // // If there is a search query, filter companies by name
+        // if ($query) {
+        //     $workers = People::where('name', 'like', '%' . $query . '%')->get();
+        // } else {
+        //     $companies = People::all();
+        // }
+
+        return view('people.index', compact('workers'));
     }
 
 
