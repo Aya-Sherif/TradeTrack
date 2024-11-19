@@ -105,7 +105,7 @@ class CompanyController extends Controller
             if ($item->type == 'payment') {
 
                 $item->update([
-                    'total_in_this_step' => $oldValue + $item->amount
+                    'total_in_this_step' => $oldValue - $item->amount
                 ]);
             } else {
                 $item->update([
