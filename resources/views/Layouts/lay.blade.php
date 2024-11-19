@@ -68,11 +68,12 @@
 
                     <!-- Link to Workers -->
                     <li><span class="glyphicon glyphicon-wrench"></span><a
-                            href="{{ route('workers.index') }}">العمال</a></li>
+                            href="{{ route('people.index', ['role' => 'worker']) }}">العمال</a></li>
 
                     <!-- Link to Drivers -->
                     <li><span class="glyphicon glyphicon-road"></span><a
-                            href="{{ route('drivers.index') }}">السائقين</a></li>
+                            href="{{ route('people.index', ['role' => 'driver']) }}">السائقين</a></li>
+
 
                     <!-- Link to Daily Services -->
                     <li><span class="glyphicon glyphicon-calendar"></span><a

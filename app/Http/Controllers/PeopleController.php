@@ -11,10 +11,22 @@ class PeopleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $role = $request->query('role');  // Get the role from query parameter
+
+
+        if ($role) {
+            // Filter based on role (worker or driver)
+            $people = People::where('role', $role)->get();
+        } else {
+            // If no role is provided, show all people
+            $people = People::all();
+        }
+
+        return view('people.index', compact('people'));
     }
+
 
     /**
      * Show the form for creating a new resource.

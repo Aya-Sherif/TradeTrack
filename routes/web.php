@@ -35,7 +35,7 @@ Route::get('/', function () {
 
 Route::resource('farmers', FarmerController::class);
 Route::resource('people', PeopleController::class);
-Route::resource('workers', WorkerController::class);
+Route::resource('workers/{pearson_id}/workers', WorkerController::class);
 Route::resource('drivers', DriverController::class);
 Route::resource('merchants', MerchantController::class);
 Route::resource('companies', CompanyController::class);
