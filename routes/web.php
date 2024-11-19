@@ -9,6 +9,8 @@ use App\Http\Controllers\FarmerController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\MerchantGoodsController;
 use App\Http\Controllers\MerchantPaymentController;
+use App\Http\Controllers\people;
+use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\ReservedStockController;
 use App\Http\Controllers\search;
 
@@ -32,7 +34,8 @@ Route::get('/', function () {
 });
 
 Route::resource('farmers', FarmerController::class);
-Route::resource('workers', WorkerController::class);
+Route::resource('people', PeopleController::class);
+Route::resource('workers/{pearson_id}/workers', WorkerController::class);
 Route::resource('drivers', DriverController::class);
 Route::resource('merchants', MerchantController::class);
 Route::resource('companies', CompanyController::class);

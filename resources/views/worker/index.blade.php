@@ -1,84 +1,53 @@
 @extends('layouts.lay')
+
 @section('content')
-<!--Start Main content container-->
-<div class="main_content_container">
-    <div class="main_container main_menu_open">
-        <div class="page_content">
-            <h1 class="heading_title">عرض كل العملاء</h1>
+    <div class="main_content_container">
+        <div class="main_container main_menu_open">
+            <div class="page_content">
+                <h1 class="heading_title">عرض كل العمال</h1>
 
-            <div class="wrap">
-                <table class="table table-bordered">
-                    <colgroup>
-                        <col style="width: 5%;"> <!-- ID Column -->
-                        <col style="width: 25%;"> <!-- Client Name Column -->
-                        <col style="width: 25%;"> <!-- Client email Column -->
-                        <col style="width: 15%;"> <!-- Role Column -->
-                        <col style="width: 15%;"> <!-- Actions Column -->
-                    </colgroup>
-                    @include('layouts.message')
+                <!-- Search and Add Worker in the Same Line -->
+                <div class="d-flex justify-content-between mb-3">
+                    <!-- Search Form -->
+                    <form action="{{ route('workers.index') }}" method="GET" class="form-inline navbar-form navbar-left">
+                        <input type="text" name="query" class="form-control mr-2" placeholder="بحث باسم العامل"
+                            value="{{ request()->query('query') }}">
+                        <button type="submit" class="btn btn-secondary">بحث</button>
+                    </form>
 
+                    <!-- Add Worker Button -->
+                    <a href="{{ route('people.create') }}" class="btn btn-primary">إضافة عامل</a>
+                </div>
 
-                    <tr>
-                        <td>#</td>
-                        <td>الرقم التعريفي</td>
-                        <td>اسم العميل</td>
-                        <td>رقم الهاتف</td>
-                        <td>الحساب</td>
-                        <td>التحكم</td>
-                    </tr>
-                    @foreach ($clients as $item)
-                        <!-- <tr @if($item->status == 0) class="table-danger" @endif> Apply red color if status is 0 -->
-                        <tr> <!-- Apply red color if status is 0 -->
-                            <td>{{ $loop->iteration }}</td>
-
-                            <td>{{ $item->client_identifier }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->phone }}</td>
-                            <td>{{ $item->balance }}</td>
-                            <td>
-                                <a href="{{ route('client.edit', $item->id) }}" class="glyphicon glyphicon-pencil"
-                                    data-toggle="tooltip" data-placement="top" title="Edit"></a>
-                                <a href="{{ route('client.show', $item->id) }}" class="glyphicon glyphicon-eye-open"
-                                    data-toggle="tooltip" data-placement="top" title="Show"></a>
-                                    <a href="{{ route('clients.balance.edit', $item->id) }}"
-                                        class="glyphicon glyphicon-plus" title="تسديد حساب"></a>
-
-                                <!-- <a href="javascript:void(0);" class="glyphicon glyphicon-remove" data-toggle="tooltip"
-                                            data-placement="top" title="delete" onclick="confirmDelete({{ $item->id }})"></a> -->
-
-                                <!-- Hidden form for delete action -->
-                                <!-- <form id="delete-form-{{ $item->id }}" action="{{ route('client.destroy', $item->id) }}"
-                                            method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </td> -->
-                        </tr>
-                    @endforeach
-                </table>
+                <!-- Workers Table -->
+                <div class="wrap">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>اسم العامل</th>
+                                <th>الرصيد</th>
+                                <th>التحكم</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($workers as $worker)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $worker->name }}</td>
+                                    <td>{{ number_format($worker->account_balance, 2) }} جنيه</td>
+                                    <td>
+                                        <!-- Actions -->
+                                        <a href="{{ route('workers.show', $worker->id) }}" class="btn btn-info">كشف حساب</a>
+                                        <a href="{{ route('workers.create', $worker->id) }}" class="btn btn-success">إضافة يوم</a>
+                                        {{-- <a href="{{ route('payments.create', $worker->id) }}" class="btn btn-danger">تسديد</a> --}}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- <script>
-    function confirmDelete(clientId) {
-        Swal.fire({
-            title: "هل أنت متأكد من ازالة هذا العميل؟ ",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "نعم"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + clientId).submit();
-                Swal.fire({
-                    title: "تم تجميد الهميل",
-                    icon: "success"
-                });
-            }
-        });
-    }
-</script> -->
-<!--/End Main content container-->
 @endsection

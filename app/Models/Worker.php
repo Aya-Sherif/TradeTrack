@@ -8,6 +8,8 @@ class Worker extends People
 {
     use HasFactory;
 
+    protected $fillable = ['person_id', 'season_id', 'overtime_hours','daily_wage','created_at'];
+
     // Worker belongs to a season
     public function season()
     {

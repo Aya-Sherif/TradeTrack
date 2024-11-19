@@ -86,7 +86,6 @@
                                 <td>-</td>
                                 <td>-</td>
                                 <td>{{ $item['total_in_this_step'] }}</td>
-                                <td>{{ $item['description'] }}</td>
                             @elseif ($item['type'] == 'payment')
                                 {{-- Payment Details --}}
                                 <td>-</td>

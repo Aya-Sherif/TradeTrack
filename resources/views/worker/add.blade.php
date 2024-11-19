@@ -1,52 +1,68 @@
 @extends('layouts.lay')
+
 @section('content')
-<div class="main_content_container">
-    <div class="main_container  main_menu_open">
-        <!--Start system bath-->
-        <div class="home_pass hidden-xs">
-            <ul>
-                <li class="bring_right"><span class="glyphicon glyphicon-home "></span></li>
+    <div class="main_content_container">
+        <div class="main_container main_menu_open">
+            <div class="page_content">
+                <h1 class="heading_title">إضافة يومية للعامل: {{ $person->name }}</h1>
 
-            </ul>
-        </div>
-        <!--/End system bath-->
-        <div class="page_content">
+                <div class="form">
+                    <form action="{{ route('workers.store', $person->id) }}" method="POST">
+                        @csrf
 
-            <h1 class="heading_title">إضافة عميل جديد</h1>
-            @include('layouts.message')
+                        <!-- Daily Wage Field -->
+                        <div class="row">
 
 
+                            <!-- Overtime Hours Field -->
+                            <div class="form-group col-md-4">
+                                <label for="overtime_hours" class="control-label">ساعات العمل الإضافية</label>
+                                <input type="number" name="overtime_hours" class="form-control">
+                                @error('overtime_hours')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-
-            <div class="form">
-                <form class="form-horizontal" action="{{ route('client.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="input0" class="col-sm-2 control-label bring_right left_text">اسم العضو</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="input0" name="الاسم" placeholder="اسم العضو"
-                                value="{{old('الاسم')}}">
+                            <!-- Date Field -->
+                            <div class="form-group col-md-4">
+                                <label for="date" class="control-label">التاريخ</label>
+                                <input type="date" name="date" class="form-control" required>
+                                @error('date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="daily_wage" class="control-label">الأجر اليومي</label>
+                                <input type="number" name="daily_wage" class="form-control" required>
+                                @error('daily_wage')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="input2" class="col-sm-2 control-label bring_right left_text"> رقم التليفون</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="input2" name="رقم_الهاتف"
-                                placeholder="رقم التليفون" value="{{ old('رقم_الهاتف') }}">
+                        <div class="col-md-4">
+                            <label for="season_id" class="control-label bring_right left_text ">الموسم</label>
+                            <select name="season_id" class="form-control " required>
+                                <option value="">اختر الموسم</option>
+                                @foreach($seasons as $season)
+                                    <option value="{{ $season->id }}" {{ old('season_id', $seasons->first()->id) == $season->id ? 'selected' : '' }}>
+                                        {{ $season->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('season_id')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </div>
-                
-                    <!-- Submit and Reset Buttons -->
-                    <div class="form-group">
-                        <div class="col-sm-12 col-sm-offset-0">
-                            <button type="submit" class="btn btn-danger">إضافة عميل</button>
+
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">إضافة اليومية</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
-</div>
-<!--/End Main content container-->
 @endsection
