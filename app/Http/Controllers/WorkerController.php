@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWorkerRequest;
+use App\Models\Payment;
 use App\Models\people;
 use App\Models\Season;
 use App\Models\Worker;
@@ -24,7 +25,7 @@ class WorkerController extends Controller
             })
             ->get();
 
-dd($workers);
+        dd($workers);
         // // If there is a search query, filter companies by name
         // if ($query) {
         //     $workers = People::where('name', 'like', '%' . $query . '%')->get();
@@ -36,7 +37,7 @@ dd($workers);
     }
 
 
-   /**
+    /**
      * Show the form for adding a new daily wage record for the worker.
      */
     public function create($personId)
@@ -44,7 +45,7 @@ dd($workers);
         $person = people::findOrFail($personId); // Get the person (worker) by ID
         $seasons = Season::all();
 
-        return view('worker.add', compact('person','seasons')); // Return view with person data
+        return view('worker.add', compact('person', 'seasons')); // Return view with person data
     }
 
     /**
@@ -61,21 +62,33 @@ dd($workers);
             'overtime_hours' => $request->overtime_hours ?? 0, // Default to 0 if not provided
             'created_at' => $request->date, // Use the provided date for created_at
         ]);
-        $person=people::findOrFail($personId);
-        $person->account_balance+=($request->daily_wage+ $request->overtime_hours );
+        $person = people::findOrFail($personId);
+        $person->account_balance += ($request->daily_wage + $request->overtime_hours);
         $person->update();
 
 
-        return redirect()-> route('people.index', ['role' => 'worker'])->with('success', 'تم إضافة اليومية بنجاح');
+        return redirect()->route('people.index', ['role' => 'worker'])->with('success', 'تم إضافة اليومية بنجاح');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    // WorkerController.php
+    public function show($person_id)
     {
-        //
+        // Retrieve the worker (person) by person_id
+        $worker = People::findOrFail($person_id);
+
+        // Retrieve related worker details (if any)
+        $worker_details = Worker::where('person_id', $worker->id)->get();
+
+        // Retrieve payments related to the worker (if applicable)
+        $payments = Payment::where('person_id', $worker->id)->get();
+
+        // Return the view with the data
+        return view('worker.show', compact('worker', 'worker_details', 'payments'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

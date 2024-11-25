@@ -77,6 +77,41 @@ body {
     color: #004085; /* Dark blue */
 }
 
+.worker-details {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.card h3 {
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.card p {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.text-primary {
+    color: #007bff; /* الأزرق */
+}
+
+.text-success {
+    color: #28a745; /* الأخضر */
+}
+
+.heading_title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 .user_info {
     background-color: #e64759;
     border-radius: 5px;

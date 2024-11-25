@@ -41,6 +41,10 @@ Route::resource('workers/{pearson_id}/workers', WorkerController::class);
 Route::resource('drivers/{person_id}/drivers', DriverController::class);
 Route::get('payment/{person_id}/create', [PaymentController::class, 'create'])->name('pay.create');
 Route::post('payment/{person_id}', [PaymentController::class, 'store'])->name('pay.store');
+// Edit payment route
+Route::get('payment/{payment}/edit', [PaymentController::class, 'edit'])->name('pay.edit');
+// Update payment route
+Route::put('payment/{payment}', [PaymentController::class, 'update'])->name('pay.update');
 Route::resource('merchants', MerchantController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('seasons', SeasonController::class);
